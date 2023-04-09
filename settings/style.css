@@ -157,17 +157,6 @@ nav {
     margin: 10px 0;
   }
   
-  .label {
-    display: inline-block;
-    width: 150px;
-    font-weight: bold;
-  }
-  
-  .value {
-    display: inline-block;
-    width: calc(100% - 150px);
-    word-break: break-all;
-  }
 
   .delete-account {
     background-color: red;
