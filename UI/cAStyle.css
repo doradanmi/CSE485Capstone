@@ -1,0 +1,127 @@
+/*
+*
+* Create Account Page
+*
+*/
+
+
+
+.createAccount {
+	width: 600px;
+	margin: 0 auto;
+	background-color: #202123;
+	border-radius: 5px;
+	padding: 70px;
+    padding-top: 10px;
+	box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.4);
+	position: relative;
+    margin-left: 280px;
+    margin-bottom: 5px;
+    color: white;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    display: inline-block;
+    text-align: right;
+}
+
+
+
+  .cAHeader {
+    
+    top:0rem;
+    font-size: 1.4rem;
+    text-align: center;
+	
+	
+   
+    
+  }
+ 
+  .firstAndLastName {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: right;
+  }
+  .firstAndLastName label{
+    display: inline-block;
+    width: 100px; /* adjust the width as needed */
+    margin-right: 20px; /* adjust the margin as needed */
+    text-align: left; 
+    
+  }
+  .fName, .lName {
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .fName label, .lName label {
+    margin-bottom: 5px;
+    width: 250px;
+    font-size: 1.4rem;
+  }
+  
+  .fName input, .lName input {
+  
+    border: 1px solid white;
+    padding: 5px;
+    
+  }
+  .fName input {
+    margin-right: 20px;;
+  }
+  .lastName input {
+    margin-left: 20px;;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    
+    
+  }
+  /* Other Account Info etc*/
+  .form-group label {
+    
+   /* padding-right: 50px;*/
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: 1.4rem;
+    
+  }
+  .form-group input {
+    padding: 5px;
+    border: 1px solid white;
+    
+  }
+  /* User input for Create Account page*/
+  input {
+    padding-right: 100px;
+    margin-bottom: 10px;
+  }
+
+  #submit{
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    height:40px;
+    width: 40%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+
+.loginLink a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 40;
+
+}
+  

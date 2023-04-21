@@ -1,0 +1,161 @@
+<!--Front end does not handle duplicate usernames. Back end must implement that. Back end
+must also handle passwords and allow user to save changes if information requirements are satisfied.
+No empty blanks allowed.-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Create Account Page</title>
+    <link rel="stylesheet" type="text/css" href="cAStyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/ffd3683b0c.js" crossorigin="anonymous"></script>
+</head>
+   
+
+  <!-- Main content area -->
+  <body>
+    <div class="createAccount">
+      <div class = "cAHeader">
+        <h2>Create Account</h2>
+      </div>
+      <form id="userForm">
+                
+        <div class = "firstAndLastName">
+          <div class ="fName">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" placeholder="John" value="">
+          </div>
+                    
+          <div class = "lName">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" value="">
+          </div>
+        </div>
+        <div class = "otherAccountInfo">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="johndoe@example.com" value="">
+          </div>
+          <div class="form-group">
+            <label for="role">Job Role:</label>
+            <input type="text" id="role" name="role" placeholder="Product Manager" value="">
+          </div>
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="johndoe" value="">
+          </div>
+                
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="password" value="">
+          </div>
+            
+        <button id="submit" onclick= "createInfo()">Sign Up</button>
+        <div id="signingUpID"></div>
+
+        <div class ="loginLink">
+            <a href="login.html" required style ="color: lightslategray;">Login</a>
+        </div>
+        
+
+                
+      </form>
+
+    </div>
+
+    <script>
+
+      function createInfo() {
+
+        const signUpButton = document.getElementById("signingUpID");
+
+        signUpButton.addEventListener('click', (event) => {
+
+        //This is to prevent page from refreshing so that the "Information Updated" sentence
+        // will stay on the page instead of popping up for a second
+        event.preventDefault();
+
+
+        //Leave or Keep "".value" here????
+        const firstName = document.getElementById('firstName').value;
+		const lastName = document.getElementById('lastName').value;
+		const email = document.getElementById('email').value;
+        const role = document.getElementById('role').value;
+		const username = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
+
+        // Stores values to send to back end
+        const accountInfo = {
+
+            firstName: firstName.value,
+            lastName: lastName.value,
+            email: email.value,
+            jobRole: role.value,
+            username: username.value,
+            password: password.value,
+
+        };
+
+        });
+
+        const profileContainer = document.getElementById('Profile');
+
+        fetch('/api/user')
+            .then(response => response.json())
+            .then(data => {
+                const firstName = data.firstName;
+                const lastName = data.lastName;
+                const email = data.email;
+                const jobRole = data.jobRole;
+                const username = data.username;
+                const password = data.password;
+
+                // Create HTML elements to display the user's information
+                const fNameElement = document.createElement('p');
+                fNameElement.innerText = `First Name: ${firstName}`;
+
+                const lNameElement = document.createElement('p');
+                lNameElement.innerText = `Last Name: ${lastName}`;
+
+                const emailElement = document.createElement('p');
+                emailElement.innerText = `Email: ${email}`;
+
+                const jobRoleElement = document.createElement('p');
+                jobRoleElement.innerText = `Job Role: ${jobRole}`;
+
+                const usernameElement = document.createElement('p');
+                usernameElement.innerText = `Username: ${username}`;
+
+                const pWElement = document.createElement('p');
+                pWElement.innerText = `Password: ${password}`;
+
+                // Add info elements to the container element
+                profileContainer.appendChild(fNameElement);
+                profileContainer.appendChild(lNameElement);
+                profileContainer.appendChild(emailElement);
+                profileContainer.appendChild(jobRoleElement);
+                profileContainer.appendChild(usernameElement);
+                profileContainer.appendChild(pWElement);
+            })
+            .catch(error => {
+                console.error(error);
+                profileContainer.innerText = 'Error loading user information.';
+            });
+
+            
+
+            
+      }
+
+     
+
+
+
+    </script>   
+    
+  </body>
+
+</html>
