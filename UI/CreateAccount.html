@@ -1,7 +1,7 @@
 <!--Front end does not handle duplicate usernames. Back end must implement that. Back end
 must also handle passwords and allow user to save changes if information requirements are satisfied.
 No empty blanks allowed.-->
-
+</html>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,9 +35,9 @@ No empty blanks allowed.-->
           </div>
         </div>
         <div class = "otherAccountInfo">
-          <!--<div class="form-group">
+          <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="johndoe@example.com" value="">-->
+            <input type="text" id="email" name="email" placeholder="johndoe@example.com" value="">
           </div>
           <div class="form-group">
             <label for="role">Job Role:</label>
@@ -54,7 +54,7 @@ No empty blanks allowed.-->
           </div>
         </div>  
         <button id="submit">Sign Up</button>
-        <!--<div id="signingUpID"></div>-->
+        <<div id="signingUpID"></div>
 
         <div class ="loginLink">
             <a href="login.html" required style ="color: lightslategray;">Login</a>
@@ -67,64 +67,48 @@ No empty blanks allowed.-->
     </div>
 
     <script>
+      function createInfo() {
+          const userIn = document.getElementById("username").value;
+          const passIn = document.getElementById("password").value;
+          const fnameIn = document.getElementById("firstName").value;
+          const lnameIn = document.getElementById("lastName").value;
+          const emailIn = document.getElementById("email").value;
+          const roleIn = document.getElementById("role").value;
+          
 
-      
-      
-      
+          const lambdaUrl = 'https://twvazdor6gp5x4nuofhderginy0ytwbf.lambda-url.us-east-1.on.aws/';
+          const requestBody = {
+              user: userIn,
+              password: passIn,
+              first_name: fnameIn,
+              last_name: lnameIn,
+              email: emailIn,
+              role: roleIn
+          };
 
-        const url = 'https://nd1uasutw9.execute-api.us-east-1.amazonaws.com/Prod/create';
-                      
-        
-        const signUpButton = document.getElementById("submit");
-
-        signUpButton.addEventListener('click', (event) => {
-
-        //This is to prevent page from refreshing 
-        event.preventDefault();
-
-
-        //Gets value of user information
-        const firstName = document.getElementById('firstName').value;
-		    const lastName = document.getElementById('lastName').value;
-		    //const email = document.getElementById('email').value;
-        const role = document.getElementById('role').value;
-		    const username = document.getElementById('username').value;
-		    const password = document.getElementById('password').value;
-
-        // Stores values to send to back end
-        const payload = {
-
-            first_name: firstName,
-            last_name: lastName,
-           // email: email,
-            role: role,
-            user: username,
-            password: password,
-
-        };
-
-        // Define the options for the POST request
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        };
-
-        // Send a POST request to the API endpt
-        fetch(url, options)
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-
-        });
-
-       
-
-      
-
-    </script>   
+          fetch(lambdaUrl, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(requestBody)
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then(data => {
+              // Handle the response from the Lambda function.
+              console.log('Lambda Response:', data);
+          })
+          .catch(error => {
+              // Handle errors.
+              console.error('Lambda Error:', error);
+          });
+      }
+  </script>
     
   </body>
 
