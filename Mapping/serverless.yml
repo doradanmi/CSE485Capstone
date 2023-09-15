@@ -1,0 +1,20 @@
+service: BackendUTM
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  CreateAccount:
+    handler: create_account.handler
+  LoginAccount:
+    handler: login_account.handler
+  create_geofence:
+    handler: create_geofence.create_map
+  create_flightpath:
+    handler: create_flightpath.create_flight
+
+plugins:
+  - serverless-python-requirements

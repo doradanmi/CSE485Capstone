@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_b4c57a53bec33cbe67cc6ee3ab3cd17d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_b4c57a53bec33cbe67cc6ee3ab3cd17d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_b4c57a53bec33cbe67cc6ee3ab3cd17d = L.map(
+                "map_b4c57a53bec33cbe67cc6ee3ab3cd17d",
+                {
+                    center: [33.4242, -111.9281],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 15,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e55181034186bc1915f542f67299a303 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",
+                {"attribution": "Map tiles by \u003ca target=\"_blank\" href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e. Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/3.0\"\u003eCC BY SA\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_b4c57a53bec33cbe67cc6ee3ab3cd17d);
+        
+    
+            var marker_116e6f1b7bcfcc5f26c70ad40242d62a = L.marker(
+                [33.4242, -111.9281],
+                {}
+            ).addTo(map_b4c57a53bec33cbe67cc6ee3ab3cd17d);
+        
+    
+        var popup_88230b7624d4ed0852734616266b5dfd = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e964b74f5736a89f975bb2ad4bc3b07a = $(`<div id="html_e964b74f5736a89f975bb2ad4bc3b07a" style="width: 100.0%; height: 100.0%;"><i>Arizona State University</i></div>`)[0];
+                popup_88230b7624d4ed0852734616266b5dfd.setContent(html_e964b74f5736a89f975bb2ad4bc3b07a);
+            
+        
+
+        marker_116e6f1b7bcfcc5f26c70ad40242d62a.bindPopup(popup_88230b7624d4ed0852734616266b5dfd)
+        ;
+
+        
+    
+    
+            var circle_marker_e8ff3c11bf8247ac71f7d1470ba5d17c = L.circleMarker(
+                [33.4242, -111.9281],
+                {"bubblingMouseEvents": true, "color": "#3186cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3186cc", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15000, "stroke": true, "weight": 3}
+            ).addTo(map_b4c57a53bec33cbe67cc6ee3ab3cd17d);
+        
+    
+        var popup_c2d497699eb1c222ad9bb54b027cd61b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_09af0761950200059615cd8c5dbef071 = $(`<div id="html_09af0761950200059615cd8c5dbef071" style="width: 100.0%; height: 100.0%;">GeoFence</div>`)[0];
+                popup_c2d497699eb1c222ad9bb54b027cd61b.setContent(html_09af0761950200059615cd8c5dbef071);
+            
+        
+
+        circle_marker_e8ff3c11bf8247ac71f7d1470ba5d17c.bindPopup(popup_c2d497699eb1c222ad9bb54b027cd61b)
+        ;
+
+        
+    
+</script>
+</html>
