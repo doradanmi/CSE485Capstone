@@ -45,7 +45,7 @@ function FlightTable({ data }) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className="py-2 px-4 border-b">
+                <th {...column.getHeaderProps()} className="py-2 px-4 border-b border-r border-gray-300">
                   {column.render("Header")}
                 </th>
               ))}

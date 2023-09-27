@@ -3,6 +3,8 @@ import "./App.css";
 import Map from "react-map-gl";
 import { useTable } from "react-table";
 import FlightTable from "./FlightTable";
+import FlightInputForm from "./FlightInputForm";
+import MapBox from "./MapBox";
 
 const sampleData = [
   {
@@ -35,25 +37,19 @@ function App() {
   const [flights, setFlights] = useState(
     JSON.parse(JSON.stringify(sampleData))
   );
-  
 
-  
+  function addFlight(flight) {
+    setFlights([...flights, flight]);
+  }
+
   return (
-   
     <div className="flex">
-      <FlightTable data={flights}/>
-      {/* <InputForm setFlights={setFlights} /> */}
+      <div className="flex flex-col">
+        <FlightTable data={flights} />
+        <FlightInputForm addFlight={addFlight} />
+      </div>
       <div className="mx-12">
-        <Map
-          mapboxAccessToken={import.meta.env.VITE_APP_MAPBOX_TOKEN}
-          initialViewState={{
-            longitude: -111.94,
-            latitude: 33.4255,
-            zoom: 12,
-          }}
-          style={{ width: 800, height: 800 }}
-          mapStyle="mapbox://styles/mapbox/streets-v9"
-        />
+        <MapBox flights={flights} />
       </div>
     </div>
   );
