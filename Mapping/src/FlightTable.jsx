@@ -1,4 +1,4 @@
-import { useTable } from "react-table";
+import React, { useTable } from "react-table";
 
 const columns = [
   {
@@ -33,7 +33,6 @@ function FlightTable({ data }) {
       columns,
       data,
     });
-  console.log(rows);
 
   return (
     <div>
@@ -45,7 +44,10 @@ function FlightTable({ data }) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className="py-2 px-4 border-b border-r border-gray-300">
+                <th
+                  {...column.getHeaderProps()}
+                  className="py-2 px-4 border-b border-r border-gray-300"
+                >
                   {column.render("Header")}
                 </th>
               ))}

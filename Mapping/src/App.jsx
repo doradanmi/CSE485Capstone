@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import Map from "react-map-gl";
-import { useTable } from "react-table";
 import FlightTable from "./FlightTable";
 import FlightInputForm from "./FlightInputForm";
 import MapBox from "./MapBox";
+import TimeSlider from "./TimeSlider";
 
 const sampleData = [
   {
@@ -34,6 +33,7 @@ const sampleData = [
 ];
 
 function App() {
+  const [time, setTime] = useState(25250);
   const [flights, setFlights] = useState(
     JSON.parse(JSON.stringify(sampleData))
   );
@@ -44,12 +44,13 @@ function App() {
 
   return (
     <div className="flex">
+      <div className="mx-12">
+        <MapBox flights={flights} time={time} />
+        <TimeSlider time={time} setTime={setTime} />
+      </div>
       <div className="flex flex-col">
         <FlightTable data={flights} />
         <FlightInputForm addFlight={addFlight} />
-      </div>
-      <div className="mx-12">
-        <MapBox flights={flights} />
       </div>
     </div>
   );
