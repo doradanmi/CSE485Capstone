@@ -113,6 +113,11 @@
     width: 40%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
+    cursor: pointer;
+}
+
+#submit:hover {
+  background-color: gray;
 }
 
 .loginLink a {
@@ -122,6 +127,8 @@
     text-align: center;
     margin-top: 10px;
     font-weight: 40;
+    cursor: pointer;
 
 }
+
   
