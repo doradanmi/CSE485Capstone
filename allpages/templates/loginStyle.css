@@ -64,11 +64,15 @@ body {
     display: block;
     margin: 0 auto;
     margin-top: 20px;
+    cursor: pointer;
 }
 .pageLogin a {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 
+}
+.pageLogin button[type=submit]:hover {
+    background-color: grey ;
 }
 .createAccountLink {
     margin-top: 10px;
