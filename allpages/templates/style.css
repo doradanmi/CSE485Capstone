@@ -280,6 +280,9 @@ input {
 
 #messageHere {
   height: 90px;
+  color: fieldtext;
+  font-family: inherit;
+  
 }
 
 /* Information Updated Msg Font*/
