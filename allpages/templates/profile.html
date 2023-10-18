@@ -94,44 +94,45 @@ No empty blanks allowed.-->
     <script>
       let msgDisplayed = false;
 
-      function updateInfo() {
+      function updateInfo(event) {
 
         //This is to prevent page from refreshing so that the "Information Updated" sentence
         // will stay on the page instead of popping up for a second
         event.preventDefault();
-		    const firstName = document.getElementById('firstName').value;
-		    const lastName = document.getElementById('lastName').value;
-		    const email = document.getElementById('email').value;
-        const role = document.getElementById('role').value;
-		    const username = document.getElementById('username').value;
-		    const password = document.getElementById('password').value;
+		    // const firstName = document.getElementById('firstName').value;
+		    // const lastName = document.getElementById('lastName').value;
+		    // const email = document.getElementById('email').value;
+        // const role = document.getElementById('role').value;
+		    // const username = document.getElementById('username').value;
+		    // const password = document.getElementById('password').value;
+       
 
 
-
-		    localStorage.setItem('firstName', firstName);
-		    localStorage.setItem('lastName', lastName);
-		    localStorage.setItem('email', email);
-        localStorage.setItem('role', role);
-		    localStorage.setItem('username', username);
-		    localStorage.setItem('password', password);
+		    //localStorage.setItem('firstName', firstName);
+		    //localStorage.setItem('lastName', lastName);
+		    //localStorage.setItem('email', email);
+        //localStorage.setItem('role', role);
+		    //localStorage.setItem('username', username);
+		    //localStorage.setItem('password', password);
+        
 
         const lambdaUrl = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
-          const requestBody = {
-              user: username,
-              password: password,
-              first_name: firstName,
-              last_name: lastName,
-              email: email,
-              role: role
-          };
+          // const requestBody = {
+          //     user: username,
+          //     password: password,
+          //     first_name: firstName,
+          //     last_name: lastName,
+          //     email: email,
+          //     role: role
+          // };
 
-          fetch(lambdaUrl, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(requestBody)
-          })
+          fetch(lambdaUrl)
+              // method: 'POST',
+              // headers: {
+              //     'Content-Type': 'application/json'
+              // },
+              // body: JSON.stringify(requestBody)
+          
           .then(response => {
               if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -140,18 +141,55 @@ No empty blanks allowed.-->
           })
           .then(data => {
               // Handle the response from the Lambda function.
-              console.log('Lambda Response:', data);
-              alert("Account succesfully updated!!!")
+              console.log('User Data: ', data);
+              document.getElementById('firstName').value = data.first_name;
+		          document.getElementById('lastName').value = data.last_name;
+		          document.getElementById('email').value = data.email;
+              document.getElementById('role').value = data.role;
+		          document.getElementById('username').value = data.user;
+		          document.getElementById('password').value = data.password;
           })
           .catch(error => {
               // Handle errors.
               console.error('Lambda Error:', error);
               alert("Error creating account please try again")
           });
+
+          const requestBody = {
+              user: document.getElementById('username').value,
+              password: document.getElementById('password').value,
+              first_name: document.getElementById('firstName').value,
+              last_name: document.getElementById('lastName').value,
+              email: document.getElementById('email').value,
+              role: document.getElementById('role').value
+          };
+
+          fetch(lambdaUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type' : 'application/json'
+        
+            },
+            body: JSON.stringify(requestBody)
+          })
+          .then(response => {
+            if(!response.ok) {
+              throw new Error('HTTP error!1 Status: ${response.status}');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Lambda Response:', data);
+            alert("Account successfully updated!!!");
+          })
+          .catch(error => {
+            console.log('Lambda Resonse:', data);
+            alert("Error updating account. Please try again.");
+          })
             
       }
 
-
+      updateInfo(new Event('dummy'));
 
 
     </script>   
