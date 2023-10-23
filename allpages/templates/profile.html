@@ -31,7 +31,7 @@ No empty blanks allowed.-->
         <ul class="nav-list bottom-list">
           <li style="margin-top: 8rem;"><a href="#">Help</a></li>
           <li><a href="ContactUs.html">Contact Us</a></li>
-          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: #888;"></i><a href="#"><span style="padding-left: .7rem;">Log out</span></a></li>
+          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: #888;"></i><a href="login.html"><span style="padding-left: .7rem;">Log out</span></a></li>
         </ul>
       </nav>
   </body>
@@ -94,11 +94,60 @@ No empty blanks allowed.-->
     <script>
       let msgDisplayed = false;
 
-      function updateInfo(event) {
+      function userInfoDisplayed() {
+        
+        const lambdaUrl1 = 'https://iy26k5d2dpn4ihfs5oeaguy3im0bjqmg.lambda-url.us-east-1.on.aws/';
+          // const requestBody = {
+          //     user: username,
+          //     password: password,
+          //     first_name: firstName,
+          //     last_name: lastName,
+          //     email: email,
+          //     role: role
+          // };
+          const logInData = localStorage.getItem('loggedInSession');
+          const requestBody = {
+              Key: logInData
+          };
+
+          fetch(lambdaUrl1, {
+              method: 'POST',
+				      headers: {
+					      'Content-Type': 'application/json'
+				      },
+				      body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+				//const logInData = JSON.parse(data);
+        console.log('First Name Error: ', data.first_name);
+        //document.getElementById("firstName").textContent = userFirstName;
+        document.getElementById("firstName").value = data.first_name;
+        document.getElementById('lastName').value = data.last_name;
+        document.getElementById('email').value = data.email;
+        document.getElementById('role').value = data.role;
+				
+			
+			})
+			.catch(error => {
+				// Handle errors.
+				console.error('Lambda Error: ', error);
+				alert("Error finding user data!")
+			});
+
+      }
+      window.onload = userInfoDisplayed();
+
+      function updateInfo() {
 
         //This is to prevent page from refreshing so that the "Information Updated" sentence
         // will stay on the page instead of popping up for a second
-        event.preventDefault();
+        //event.preventDefault();
 		    // const firstName = document.getElementById('firstName').value;
 		    // const lastName = document.getElementById('lastName').value;
 		    // const email = document.getElementById('email').value;
@@ -116,61 +165,23 @@ No empty blanks allowed.-->
 		    //localStorage.setItem('password', password);
         
 
-        const lambdaUrl = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
-          // const requestBody = {
-          //     user: username,
-          //     password: password,
-          //     first_name: firstName,
-          //     last_name: lastName,
-          //     email: email,
-          //     role: role
-          // };
+        
 
-          fetch(lambdaUrl)
-              // method: 'POST',
-              // headers: {
-              //     'Content-Type': 'application/json'
-              // },
-              // body: JSON.stringify(requestBody)
-          
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then(data => {
-              // Handle the response from the Lambda function.
-              console.log('User Data: ', data);
-              document.getElementById('firstName').value = data.first_name;
-		          document.getElementById('lastName').value = data.last_name;
-		          document.getElementById('email').value = data.email;
-              document.getElementById('role').value = data.role;
-		          document.getElementById('username').value = data.user;
-		          document.getElementById('password').value = data.password;
-          })
-          .catch(error => {
-              // Handle errors.
-              console.error('Lambda Error:', error);
-              alert("Error creating account please try again")
-          });
-
-          const requestBody = {
-              user: document.getElementById('username').value,
-              password: document.getElementById('password').value,
+          const requestBody2 = {
+              
               first_name: document.getElementById('firstName').value,
               last_name: document.getElementById('lastName').value,
               email: document.getElementById('email').value,
               role: document.getElementById('role').value
           };
-
-          fetch(lambdaUrl, {
+          const lambdaUrl2 = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
+          fetch(lambdaUrl2, {
             method: 'POST',
             headers: {
               'Content-Type' : 'application/json'
         
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestBody2)
           })
           .then(response => {
             if(!response.ok) {
@@ -179,17 +190,23 @@ No empty blanks allowed.-->
             return response.json();
           })
           .then(data => {
-            console.log('Lambda Response:', data);
+            //console.log('Lambda Response:', data);
+            //console.log('First Name Error: ', data.first_name);
+            document.getElementById('firstName').value = data.first_name;
+            document.getElementById('lastName').value = data.last_name;
+            document.getElementById('email').value= data.email;
+            document.getElementById('role').value = data.role;
+
             alert("Account successfully updated!!!");
           })
           .catch(error => {
-            console.log('Lambda Resonse:', data);
+            console.error('Lambda Resonse:', error);
             alert("Error updating account. Please try again.");
           })
             
       }
 
-      updateInfo(new Event('dummy'));
+      //updateInfo(new Event('dummy'));
 
 
     </script>   

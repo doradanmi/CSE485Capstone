@@ -47,13 +47,17 @@
 				return response.json();
 			})
 			.then(data => {
+				//const logInData = JSON.parse(data);
+				const key = data.Key;
+				localStorage.setItem('loggedInSession', key);
+				
 				// Handle the response from the Lambda function.
-				console.log('Lambda Response:', data);
+
 				window.location.href = 'capstone.html'
 			})
 			.catch(error => {
 				// Handle errors.
-				console.error('Lambda Error:', error);
+				console.error('Lambda Error: ', error);
 				alert("User Not Found! Please check your login information")
 			});
 		}

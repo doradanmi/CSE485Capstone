@@ -37,7 +37,7 @@
     <!-- Main content area -->
     <main>
       <div class="welcome">
-          <h2>Welcome, User</h2>
+          <h2 id = "welcomeMsg"> Welcome, User</h2>
           <p id="location">Location: test</p>
       </div>
 
@@ -53,7 +53,7 @@
 
         <!--Script displays latitude and longitude of user's current location-->
         <script>
-
+          
 
          /* function showPosition(position) {
             console.log("showPosition function called");
@@ -77,16 +77,50 @@
               locationParagraph.textContent = `Error getting location data: ${error.message}`;
           });
 }*/
+          //const userFirstName = "John";
+         // const userFirstName = data.first_name;
+        
 
           function displayLocation(position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const locationLabel = document.getElementById("location");
-
+            const logInData = localStorage.getItem('loggedInSession');
+            console.log('Log In Data Session: ', logInData);
             
             locationLabel.textContent = `Location: ${latitude}, ${longitude}`;
-
-          
+            const lambdaURL = 'https://iy26k5d2dpn4ihfs5oeaguy3im0bjqmg.lambda-url.us-east-1.on.aws/';
+            const requestBody = {
+              Key: logInData
+            };
+            
+            fetch(lambdaURL, {
+              method: 'POST',
+				      headers: {
+					      'Content-Type': 'application/json'
+				      },
+				      body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+				//const logInData = JSON.parse(data);
+        console.log('First Name Error: ', data.first_name);
+        //document.getElementById("firstName").textContent = userFirstName;
+        const welcomeMsg = document.getElementById("welcomeMsg");
+        welcomeMsg.textContent = `Welcome, ${data.first_name}`;
+				
+			
+			})
+			.catch(error => {
+				// Handle errors.
+				console.error('Lambda Error: ', error);
+				alert("Error finding user data!")
+			});
           }
           // This function displays an error message if website cannot get user location
           function printError(error) {
