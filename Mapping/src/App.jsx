@@ -1,42 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import FlightTable from "./FlightTable";
 import FlightInputForm from "./FlightInputForm";
 import MapBox from "./MapBox";
 import TimeSlider from "./TimeSlider";
 
-const sampleData = [
-  {
-    start: { long: -111.94, lat: 33.4255 },
-    end: { long: -112.94, lat: 34.4255 },
-    flightNumber: "UA712",
-    startTime: 25200,
-    altitude: 600,
-    speed: 20,
-  },
-  {
-    start: { long: -112.04, lat: 33.5382 },
-    end: { long: -111.78, lat: 33.715 },
-    flightNumber: "AA123",
-    startTime: 28800,
-    altitude: 800,
-    speed: 25,
-  },
-  {
-    start: { long: -112.05, lat: 33.4398 },
-    end: { long: -112.12, lat: 33.5502 },
-    flightNumber: "DL456",
-    startTime: 32400,
-    altitude: 700,
-    speed: 18,
-  },
-];
+function convertJSONtoFlights(inputJSON) {
+  const flights = inputJSON.flights;
+  const flightList = [];
 
+  for (const flightNumber in flights) {
+    const flightData = flights[flightNumber];
+    for (const index in flightData) {
+      const flightInfo = flightData[index];
+      const startCoordinates = flightInfo.Start.split(", ");
+      const endCoordinates = flightInfo.End.split(", ");
+      const startTime =
+        parseInt(flightInfo.Start_Time.split(":")[0]) * 3600 +
+        parseInt(flightInfo.Start_Time.split(":")[1]) * 60;
+      const endTime =
+        parseInt(flightInfo.End_Time.split(":")[0]) * 3600 +
+        parseInt(flightInfo.End_Time.split(":")[1]) * 60;
+      const speed = parseInt(flightInfo.Speed);
+      const altitude = parseInt(flightInfo.Altitude);
+
+      const flightObject = {
+        start: {
+          long: -parseFloat(startCoordinates[1]),
+          lat: parseFloat(startCoordinates[0]),
+        },
+        end: {
+          long: -parseFloat(endCoordinates[1]),
+          lat: parseFloat(endCoordinates[0]),
+        },
+        flightNumber: flightNumber,
+        startTime: startTime,
+        altitude: altitude,
+        speed: speed,
+      };
+
+      flightList.push(flightObject);
+    }
+  }
+
+  return flightList;
+}
 function App() {
   const [time, setTime] = useState(25250);
-  const [flights, setFlights] = useState(
-    JSON.parse(JSON.stringify(sampleData))
-  );
+  const [flights, setFlights] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://xzy55jtx57tccv6r56hi45rmma0qmnfs.lambda-url.us-east-1.on.aws/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Key: "71c9a6840e7f0b0ea274e15427c9a1ac7db7b2be6f08dce14d08bcf29e075446",
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
+        const flightData = convertJSONtoFlights(data);
+        setFlights(flightData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, []);
 
   function addFlight(flight) {
     setFlights([...flights, flight]);
