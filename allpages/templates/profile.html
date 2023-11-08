@@ -41,8 +41,8 @@ No empty blanks allowed.-->
   <!-- Main content area -->
   <main>    
     <div class="user-nav">
-      <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i></a>
-      <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i></a>
+      <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i>
+      <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i>
       <span class="user-text">User</span>
     </div>
   </main>
@@ -56,34 +56,34 @@ No empty blanks allowed.-->
         <div class = "firstAndLastName">
           <div class ="fName">
             <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" placeholder="John" value="">
+            <input type="text" id="firstName" placeholder="John" value="">
           </div>
                     
           <div class = "lName">
             <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Doe" value="">
+            <input type="text" id="lastName"  placeholder="Doe" value="">
           </div>
         </div>
         <div class = "otherAccountInfo">
           <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="johndoe@example.com" value="">
+            <label>Email:</label>
+            <input id="email" placeholder="johndoe@example.com" value="">
           </div>
           <div class="form-group">
             <label for="role">Job Role:</label>
-            <input type="text" id="role" name="role" placeholder="Product Manager" value="">
+            <input type="text" id="role" placeholder="Product Manager" value="">
           </div>
           <div class="form-group">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="johndoe" value="">
+            <input type="text" id="username"  placeholder="johndoe" value="">
           </div>
                 
           <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="password" value="">
+            <input type="password" id="password" placeholder="password" value="">
           </div>
             
-        <button id="submit" onclick= "updateInfo()" type="button" >Save Changes</button>
+        <button id="submit">Save Changes</button>
         <div id="savingMyChanges"></div>
 
                 
@@ -93,52 +93,60 @@ No empty blanks allowed.-->
 
     <script>
       function updateInfo() {
-        
-        const lambdaUrl1 = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
-        const requestBody = {
-              user: document.getElementById('username').value,
-              password: document.getElementById('password').value, 
-              first_name: document.getElementById("firstName").value,
-              last_name: document.getElementById('lastName').value,
-              email: document.getElementById('email').value,
-              role: document.getElementById('role').value
+          console.log('updateInfo function called'); // Add this line to check if the function is called
+          
+          const firstName = document.getElementById('firstName').value;
+          const lastName = document.getElementById('lastName').value;
+          const email = document.getElementById('email').value;
+          const role = document.getElementById('role').value;
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          console.log('First Name:', firstName);
+          console.log('Last Name:', lastName);
+          console.log('Email:', email);
+          console.log('Role:', role);
+          console.log('Username:', username);
+          console.log('Password:', password);
+          
+          const lambdaUrl = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
+          const requestBody = {
+            user: username,
+            password: password,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            role: role
           };
+      
+          fetch(lambdaUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            //const logInData = JSON.parse(data);
+            
+            // Handle the response from the Lambda function.
+            alert("Account Information Updated")
+          })
+          .catch(error => {
+            // Handle errors.
+            console.error('Lambda Error: ', error);
+            alert("User Not Found! Please check your login information")
+          });
+          }
 
-          fetch(lambdaUrl1, {
-              method: 'POST',
-				      headers: {
-					      'Content-Type': 'application/json'
-				      },
-				      body: JSON.stringify(requestBody)
-            })
-            .then(response => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.json();
-			})
-			.then(data => {
-				//const logInData = JSON.parse(data);
-        //document.getElementById("firstName").textContent = userFirstName;
-        // console.log('First Update Name Error: ', data.first_name);
-        document.getElementById("firstName").value = data.first_name;
-        // console.log('First Update2 Name Error: ', data.first_name);
-        // console.log('First Update2.2 Name Error: ', firstName);
-        document.getElementById('lastName').value = data.last_name;
-        document.getElementById('email').value = data.email;
-        document.getElementById('role').value = data.role;
-        alert("Account Updated!")
-			})
-			.catch(error => {
-				// Handle errors.
-				console.error('Lambda Error: ', error);
-				alert("Error finding user data!")
-			});
+      document.getElementById('submit').addEventListener('click', updateInfo);
 
-      }        
-
-
-      let msgDisplayed = false;
+      //let msgDisplayed = false;
 
       function userInfoDisplayed() {
         
@@ -187,12 +195,7 @@ No empty blanks allowed.-->
 			});
 
       }
-
-      
       window.onload = userInfoDisplayed();
-
-      const saveButton = document.getElementById('submit');
-      saveButton.addEventListener('click', updateInfo);
 
       //updateInfo(new Event('dummy'));
 
