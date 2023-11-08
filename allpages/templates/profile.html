@@ -41,8 +41,8 @@ No empty blanks allowed.-->
   <!-- Main content area -->
   <main>    
     <div class="user-nav">
-      <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i>
-      <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i>
+      <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i></a>
+      <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i></a>
       <span class="user-text">User</span>
     </div>
   </main>
@@ -83,7 +83,7 @@ No empty blanks allowed.-->
             <input type="password" id="password" name="password" placeholder="password" value="">
           </div>
             
-        <button id="submit" onclick= "updateInfo()">Save Changes</button>
+        <button id="submit" onclick= "updateInfo()" type="button" >Save Changes</button>
         <div id="savingMyChanges"></div>
 
                 
@@ -92,6 +92,52 @@ No empty blanks allowed.-->
     </div>
 
     <script>
+      function updateInfo() {
+        
+        const lambdaUrl1 = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
+        const requestBody = {
+              user: document.getElementById('username').value,
+              password: document.getElementById('password').value, 
+              first_name: document.getElementById("firstName").value,
+              last_name: document.getElementById('lastName').value,
+              email: document.getElementById('email').value,
+              role: document.getElementById('role').value
+          };
+
+          fetch(lambdaUrl1, {
+              method: 'POST',
+				      headers: {
+					      'Content-Type': 'application/json'
+				      },
+				      body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+				//const logInData = JSON.parse(data);
+        //document.getElementById("firstName").textContent = userFirstName;
+        // console.log('First Update Name Error: ', data.first_name);
+        document.getElementById("firstName").value = data.first_name;
+        // console.log('First Update2 Name Error: ', data.first_name);
+        // console.log('First Update2.2 Name Error: ', firstName);
+        document.getElementById('lastName').value = data.last_name;
+        document.getElementById('email').value = data.email;
+        document.getElementById('role').value = data.role;
+        alert("Account Updated!")
+			})
+			.catch(error => {
+				// Handle errors.
+				console.error('Lambda Error: ', error);
+				alert("Error finding user data!")
+			});
+
+      }        
+
+
       let msgDisplayed = false;
 
       function userInfoDisplayed() {
@@ -141,74 +187,16 @@ No empty blanks allowed.-->
 			});
 
       }
+
+      
       window.onload = userInfoDisplayed();
 
-      function updateInfo() {
-
-        //This is to prevent page from refreshing so that the "Information Updated" sentence
-        // will stay on the page instead of popping up for a second
-        //event.preventDefault();
-		    // const firstName = document.getElementById('firstName').value;
-		    // const lastName = document.getElementById('lastName').value;
-		    // const email = document.getElementById('email').value;
-        // const role = document.getElementById('role').value;
-		    // const username = document.getElementById('username').value;
-		    // const password = document.getElementById('password').value;
-       
-
-
-		    //localStorage.setItem('firstName', firstName);
-		    //localStorage.setItem('lastName', lastName);
-		    //localStorage.setItem('email', email);
-        //localStorage.setItem('role', role);
-		    //localStorage.setItem('username', username);
-		    //localStorage.setItem('password', password);
-        
-
-        
-
-          const requestBody2 = {
-              
-              first_name: document.getElementById('firstName').value,
-              last_name: document.getElementById('lastName').value,
-              email: document.getElementById('email').value,
-              role: document.getElementById('role').value
-          };
-          const lambdaUrl2 = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
-          fetch(lambdaUrl2, {
-            method: 'POST',
-            headers: {
-              'Content-Type' : 'application/json'
-        
-            },
-            body: JSON.stringify(requestBody2)
-          })
-          .then(response => {
-            if(!response.ok) {
-              throw new Error('HTTP error!1 Status: ${response.status}');
-            }
-            return response.json();
-          })
-          .then(data => {
-            //console.log('Lambda Response:', data);
-            //console.log('First Name Error: ', data.first_name);
-            document.getElementById('firstName').value = data.first_name;
-            document.getElementById('lastName').value = data.last_name;
-            document.getElementById('email').value= data.email;
-            document.getElementById('role').value = data.role;
-
-            alert("Account successfully updated!!!");
-          })
-          .catch(error => {
-            console.error('Lambda Resonse:', error);
-            alert("Error updating account. Please try again.");
-          })
-            
-      }
+      const saveButton = document.getElementById('submit');
+      saveButton.addEventListener('click', updateInfo);
 
       //updateInfo(new Event('dummy'));
 
-
+      
     </script>   
     
   </body>
