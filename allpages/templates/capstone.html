@@ -48,7 +48,7 @@
         <div class="user-nav">
           <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i>
           <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i>
-          <span class="user-text">User</span>
+          <span class="user-text" id = "usertextID">User</span>
         </div>
 
         <!--Script displays latitude and longitude of user's current location-->
@@ -114,6 +114,8 @@
         const welcomeMsg = document.getElementById("welcomeMsg");
         welcomeMsg.textContent = `Welcome, ${data.first_name}`;
 				
+        const usertextID = document.getElementById("usertextID");
+        usertextID.textContent = `${data.first_name}`;
 			
 			})
 			.catch(error => {

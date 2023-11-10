@@ -43,7 +43,7 @@ No empty blanks allowed.-->
     <div class="user-nav">
       <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i>
       <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i>
-      <span class="user-text">User</span>
+      <span class="user-text" id = "usertextID">User</span>
     </div>
   </main>
   <body>
@@ -74,13 +74,15 @@ No empty blanks allowed.-->
             <input type="text" id="role" placeholder="Product Manager" value="">
           </div>
           <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username"  placeholder="johndoe" value="">
+            <label for="username">Username: <span class="required"></span></label>
+            <input type="text" id="username"  placeholder="Please enter your username before saving changes to update your information" value="">
+            
           </div>
                 
           <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="password" value="">
+            <label for="password">Password: <span class="required"></span></label>
+            <input type="password" id="password" placeholder="Please enter your password before saving changes to update your information" value="">
+            
           </div>
             
         <button id="submit">Save Changes</button>
@@ -107,6 +109,11 @@ No empty blanks allowed.-->
           console.log('Role:', role);
           console.log('Username:', username);
           console.log('Password:', password);
+
+          if(username.trim() === '' || password.trim() === '') {
+            alert('Fill out required fields before submission.');
+            return;
+          }
           
           const lambdaUrl = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
           const requestBody = {
@@ -133,7 +140,7 @@ No empty blanks allowed.-->
           })
           .then(data => {
             //const logInData = JSON.parse(data);
-            
+        
             // Handle the response from the Lambda function.
             alert("Account Information Updated")
           })
@@ -178,6 +185,10 @@ No empty blanks allowed.-->
 				return response.json();
 			})
 			.then(data => {
+
+        const usertextID = document.getElementById("usertextID");
+        usertextID.textContent = `${data.first_name}`;
+        
 				//const logInData = JSON.parse(data);
         console.log('First Name Error: ', data.first_name);
         //document.getElementById("firstName").textContent = userFirstName;
