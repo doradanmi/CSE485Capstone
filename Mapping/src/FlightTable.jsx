@@ -1,72 +1,119 @@
-import React, { useTable } from "react-table";
+import React from "react";
+import {
+	useReactTable,
+	flexRender,
+	getCoreRowModel,
+} from "@tanstack/react-table";
+
+function deleteFlight(flightNumber) {
+	fetch(
+		"https://i24eystngccnone2eijvnkcgey0laugl.lambda-url.us-east-1.on.aws/",
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				Flight: flightNumber,
+				User: "8b47e3b9448f0b72d9f12aa41ee5ca5754fe05f21cc8c521b5f6bdf6a507b36f",
+			}),
+		}
+	)
+		.then((response) => response.json())
+		.then((data) => {
+			if (data.message === "Flight successfully Completed!") {
+				window.location.reload();
+			} else {
+				alert(data.error);
+			}
+		})
+		.catch((error) => {
+			alert("Error deleting flight", error);
+		});
+}
 
 const columns = [
 	{
-		Header: "Flight Number",
-		accessor: "flightNumber",
+		header: "Flight Number",
+		accessorKey: "flightNumber",
 	},
 	{
-		Header: "Start",
-		accessor: "start",
+		header: "Start",
+		accessorKey: "start",
+		cell: (cell) => `${cell.getValue().long}, ${cell.getValue().lat}`,
 	},
 	{
-		Header: "End",
-		accessor: "end",
+		header: "End",
+		accessorKey: "end",
+		cell: (cell) => `${cell.getValue().long}, ${cell.getValue().lat}`,
 	},
 	{
-		Header: "Start Time",
-		accessor: "startTime",
+		header: "Start Time",
+		accessorKey: "startTime",
 	},
 	{
-		Header: "Altitude",
-		accessor: "altitude",
+		header: "Altitude",
+		accessorKey: "altitude",
 	},
 	{
-		Header: "Speed",
-		accessor: "speed",
+		header: "Speed",
+		accessorKey: "speed",
+	},
+	{
+		header: "Delete",
+		accessorKey: "delete",
+		cell: (cell) => (
+			<button
+				className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+				onClick={() => deleteFlight(cell.row.original.flightNumber)}
+			>
+				Delete
+			</button>
+		),
 	},
 ];
 
 function FlightTable({ data }) {
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-		useTable({
-			columns,
-			data,
-		});
+	const table = useReactTable({
+		data,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+	});
 
 	return (
 		<div>
-			<table
-				{...getTableProps()}
-				className="w-full border border-collapse border-gray-300"
-			>
+			<table className="w-full border border-collapse border-gray-300">
 				<thead>
-					{headerGroups.map((headerGroup) => (
-						<tr {...headerGroup.getHeaderGroupProps()}>
-							{headerGroup.headers.map((column) => (
+					{table.getHeaderGroups().map((headerGroup) => (
+						<tr key={headerGroup.id}>
+							{headerGroup.headers.map((header) => (
 								<th
-									{...column.getHeaderProps()}
+									colSpan={header.colSpan}
+									key={header.id}
 									className="py-2 px-4 border-b border-r border-gray-300"
 								>
-									{column.render("Header")}
+									{flexRender(
+										header.column.columnDef.header,
+										header.getContext()
+									)}
 								</th>
 							))}
 						</tr>
 					))}
 				</thead>
-				<tbody {...getTableBodyProps()}>
-					{rows.map((row) => {
-						prepareRow(row);
+				<tbody>
+					{table.getRowModel().rows.map((row) => {
 						return (
-							<tr {...row.getRowProps()}>
-								{row.cells.map((cell) => (
+							<tr key={row.id}>
+								{row.getVisibleCells().map((cell) => (
 									<td
-										{...cell.getCellProps()}
+										key={cell.id}
 										className="py-2 px-4 border-b border-l border-gray-300"
 									>
-										{typeof cell.value === "object"
-											? `${cell.value.long}, ${cell.value.lat}`
-											: cell.value}
+										{flexRender(
+											cell.column.columnDef.cell,
+											cell.getContext()
+										)}
 									</td>
 								))}
 							</tr>
