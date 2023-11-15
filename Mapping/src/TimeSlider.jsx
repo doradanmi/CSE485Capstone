@@ -14,7 +14,7 @@ export default function TimeSlider({ time, setTime }) {
 				onChange={(e) => setTime(e.target.value)}
 				className="w-full"
 			/>
-			<div className="ml-4">{timeString}</div>{" "}
+			<div className="ml-4">{timeString}</div>
 		</div>
 	);
 }
