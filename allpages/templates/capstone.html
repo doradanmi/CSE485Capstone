@@ -20,9 +20,9 @@
         </div>
         <ul class="nav-list">
           <li><i class="fa-solid fa-paper-plane"></i><a href="flights/index.html"><span style="padding-left: .7rem;">Flights</span></a></li>
-          <li><i class="fa-solid fa-plane"></i><a href="#"><span style="padding-left: .7rem;">Aircraft</span></a></li>
+          <li><i class="fa-solid fa-plane"></i><a href="aircraft.html"><span style="padding-left: .7rem;">Aircraft</span></a></li>
           <li><i class="fa-solid fa-user"></i><a href="profile.html"><span style="padding-left: .7rem;">Profile</span></a></li>
-          <li><i class="fa-solid fa-gear"></i><a href="#"><span style="padding-left: .7rem;">Settings</span></a></li>
+          <li><i class="fa-solid fa-gear"></i><a href="settings.html"><span style="padding-left: .7rem;">Settings</span></a></li>
         </ul>
         <ul class="nav-list bottom-list">
           <li style="margin-top: 8rem;"><a href="#">Help</a></li>
@@ -37,7 +37,7 @@
     <!-- Main content area -->
     <main>
       <div class="welcome">
-          <h2>Welcome, User</h2>
+          <h2 id = "welcomeMsg"> Welcome, User</h2>
           <p id="location">Location: test</p>
       </div>
 
@@ -48,12 +48,12 @@
         <div class="user-nav">
           <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i>
           <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i>
-          <span class="user-text">User</span>
+          <span class="user-text" id = "usertextID">User</span>
         </div>
 
         <!--Script displays latitude and longitude of user's current location-->
         <script>
-
+          
 
          /* function showPosition(position) {
             console.log("showPosition function called");
@@ -77,16 +77,52 @@
               locationParagraph.textContent = `Error getting location data: ${error.message}`;
           });
 }*/
+          //const userFirstName = "John";
+         // const userFirstName = data.first_name;
+        
 
           function displayLocation(position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const locationLabel = document.getElementById("location");
-
+            const logInData = localStorage.getItem('loggedInSession');
+            console.log('Log In Data Session: ', logInData);
             
             locationLabel.textContent = `Location: ${latitude}, ${longitude}`;
-
-          
+            const lambdaURL = 'https://iy26k5d2dpn4ihfs5oeaguy3im0bjqmg.lambda-url.us-east-1.on.aws/';
+            const requestBody = {
+              Key: logInData
+            };
+            
+            fetch(lambdaURL, {
+              method: 'POST',
+				      headers: {
+					      'Content-Type': 'application/json'
+				      },
+				      body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+				//const logInData = JSON.parse(data);
+        console.log('First Name Error: ', data.first_name);
+        //document.getElementById("firstName").textContent = userFirstName;
+        const welcomeMsg = document.getElementById("welcomeMsg");
+        welcomeMsg.textContent = `Welcome, ${data.first_name}`;
+				
+        const usertextID = document.getElementById("usertextID");
+        usertextID.textContent = `${data.first_name}`;
+			
+			})
+			.catch(error => {
+				// Handle errors.
+				console.error('Lambda Error: ', error);
+				alert("Error finding user data!")
+			});
           }
           // This function displays an error message if website cannot get user location
           function printError(error) {

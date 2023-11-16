@@ -1,4 +1,4 @@
-<!--Front end does not handle duplicate usernames. Back end must implement that. Back end
+<!--Front end does not handle duplicate usernames. Back end does that. Back end
 must also handle passwords and allow user to save changes if information requirements are satisfied.
 No empty blanks allowed.-->
 
@@ -24,14 +24,14 @@ No empty blanks allowed.-->
         </div>
         <ul class="nav-list">
           <li><i class="fa-solid fa-paper-plane"></i><a href="flights/index.html"><span style="padding-left: .7rem;">Flights</span></a></li>
-          <li><i class="fa-solid fa-plane"></i><a href="#"><span style="padding-left: .7rem;">Aircraft</span></a></li>
+          <li><i class="fa-solid fa-plane"></i><a href="aircraft.html"><span style="padding-left: .7rem;">Aircraft</span></a></li>
           <li><i class="fa-solid fa-user"></i><a href="profile.html"><span style="padding-left: .7rem;">Profile</span></a></li>
-          <li><i class="fa-solid fa-gear"></i><a href="#"><span style="padding-left: .7rem;">Settings</span></a></li>
+          <li><i class="fa-solid fa-gear"></i><a href="settings.html"><span style="padding-left: .7rem;">Settings</span></a></li>
         </ul>
         <ul class="nav-list bottom-list">
           <li style="margin-top: 8rem;"><a href="#">Help</a></li>
           <li><a href="ContactUs.html">Contact Us</a></li>
-          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: #888;"></i><a href="#"><span style="padding-left: .7rem;">Log out</span></a></li>
+          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: #888;"></i><a href="login.html"><span style="padding-left: .7rem;">Log out</span></a></li>
         </ul>
       </nav>
   </body>
@@ -43,7 +43,7 @@ No empty blanks allowed.-->
     <div class="user-nav">
       <a href="#" class="notification-icon"><i class="fa-solid fa-bell"></i>
       <a href="#" class="profile-icon"><i class="fa-solid fa-user"></i>
-      <span class="user-text">User</span>
+      <span class="user-text" id = "usertextID">User</span>
     </div>
   </main>
   <body>
@@ -56,34 +56,36 @@ No empty blanks allowed.-->
         <div class = "firstAndLastName">
           <div class ="fName">
             <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" placeholder="John" value="">
+            <input type="text" id="firstName" placeholder="John" value="">
           </div>
                     
           <div class = "lName">
             <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Doe" value="">
+            <input type="text" id="lastName"  placeholder="Doe" value="">
           </div>
         </div>
         <div class = "otherAccountInfo">
           <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="johndoe@example.com" value="">
+            <label>Email:</label>
+            <input id="email" placeholder="johndoe@example.com" value="">
           </div>
           <div class="form-group">
             <label for="role">Job Role:</label>
-            <input type="text" id="role" name="role" placeholder="Product Manager" value="">
+            <input type="text" id="role" placeholder="Product Manager" value="">
           </div>
           <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="johndoe" value="">
+            <label for="username">Username: <span class="required"></span></label>
+            <input type="text" id="username"  placeholder="Please enter your username before saving changes to update your information" value="">
+            
           </div>
                 
           <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="password" value="">
+            <label for="password">Password: <span class="required"></span></label>
+            <input type="password" id="password" placeholder="Please enter your password before saving changes to update your information" value="">
+            
           </div>
             
-        <button id="submit" onclick= "updateInfo()">Save Changes</button>
+        <button id="submit">Save Changes</button>
         <div id="savingMyChanges"></div>
 
                 
@@ -92,68 +94,109 @@ No empty blanks allowed.-->
     </div>
 
     <script>
-      let msgDisplayed = false;
-
+      // User can edit and save updated account info.
       function updateInfo() {
+                    
+          const firstName = document.getElementById('firstName').value;
+          const lastName = document.getElementById('lastName').value;
+          const email = document.getElementById('email').value;
+          const role = document.getElementById('role').value;
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          
 
-        //This is to prevent page from refreshing so that the "Information Updated" sentence
-        // will stay on the page instead of popping up for a second
-        event.preventDefault();
-		    const firstName = document.getElementById('firstName').value;
-		    const lastName = document.getElementById('lastName').value;
-		    const email = document.getElementById('email').value;
-        const role = document.getElementById('role').value;
-		    const username = document.getElementById('username').value;
-		    const password = document.getElementById('password').value;
-
-
-
-		    localStorage.setItem('firstName', firstName);
-		    localStorage.setItem('lastName', lastName);
-		    localStorage.setItem('email', email);
-        localStorage.setItem('role', role);
-		    localStorage.setItem('username', username);
-		    localStorage.setItem('password', password);
-
-        const lambdaUrl = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
+          if(username.trim() === '' || password.trim() === '') {
+            alert('Fill out required fields before submission.');
+            return;
+          }
+          
+          const lambdaUrl = 'https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/';
           const requestBody = {
-              user: username,
-              password: password,
-              first_name: firstName,
-              last_name: lastName,
-              email: email,
-              role: role
+            user: username,
+            password: password,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            role: role
           };
-
+      
           fetch(lambdaUrl, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(requestBody)
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
           })
           .then(response => {
-              if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-              return response.json();
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
           })
           .then(data => {
-              // Handle the response from the Lambda function.
-              console.log('Lambda Response:', data);
-              alert("Account succesfully updated!!!")
+        
+            // Handle the response from the Lambda function.
+            alert("Account Information Updated");
+            // Clear textboxes after user clicks "Save Changes" button
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
           })
           .catch(error => {
-              // Handle errors.
-              console.error('Lambda Error:', error);
-              alert("Error creating account please try again")
+            // Handle errors.
+            console.error('Lambda Error: ', error);
+            alert("User Not Found! Please check your login information")
           });
-            
+          }
+
+      document.getElementById('submit').addEventListener('click', updateInfo);
+
+      // User's input from Create Account page displays in Profile page.
+      function userInfoDisplayed() {
+        
+        const lambdaUrl1 = 'https://iy26k5d2dpn4ihfs5oeaguy3im0bjqmg.lambda-url.us-east-1.on.aws/';
+         
+          // Site connects user's first name to account
+          const logInData = localStorage.getItem('loggedInSession');
+          const requestBody = {
+              Key: logInData
+          };
+
+          fetch(lambdaUrl1, {
+              method: 'POST',
+				      headers: {
+					      'Content-Type': 'application/json'
+				      },
+				      body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+
+        // Site connects user's first name in upper right corner
+        const usertextID = document.getElementById("usertextID");
+        usertextID.textContent = `${data.first_name}`;
+        
+        document.getElementById("firstName").value = data.first_name;
+        document.getElementById('lastName').value = data.last_name;
+        document.getElementById('email').value = data.email;
+        document.getElementById('role').value = data.role;
+				
+			
+			})
+			.catch(error => {
+				// Handle errors.
+				console.error('Lambda Error: ', error);
+				alert("Error finding user data!")
+			});
+
       }
+      window.onload = userInfoDisplayed();
 
-
-
-
+      
     </script>   
     
   </body>

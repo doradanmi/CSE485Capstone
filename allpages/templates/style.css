@@ -197,6 +197,7 @@ nav {
   flex-direction: column;
   text-align: right;
   
+  
 }
 /* Other Account Info etc*/
 .form-group label {
@@ -217,6 +218,13 @@ nav {
 input {
   padding-right: 100px;
   margin-bottom: 10px;
+}
+.required:after {
+  content: "*";
+  color: red;
+  position: absolute;
+ 
+  
 }
 /* Information Updated Msg Font*/
 #userForm {
@@ -280,6 +288,9 @@ input {
 
 #messageHere {
   height: 90px;
+  color: fieldtext;
+  font-family: inherit;
+  
 }
 
 /* Information Updated Msg Font*/
