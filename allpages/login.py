@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory, send_file
 import mysql.connector
 
 app = Flask(__name__)
@@ -15,13 +15,16 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor()
 
+
 @app.route('/')
 def login_page():
     return render_template('login.html')
 
+
 @app.route('/capstone')
 def capstone_page():
     return render_template('capstone.html')
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -40,5 +43,19 @@ def login():
         flash("fail", 'Invalid username or password')
         return redirect(url_for('login_page'))
 
-if __name__ == '__login__':
-        app.run(debug=True)
+# get capstone.html returns send file ../Mapping/dist/index.html
+
+
+@app.route('/flights/<path:path>')
+def send_file_flights(path):
+    print(path)
+    return send_from_directory('../Mapping/dist', path)
+
+
+@app.route('/<path:path>')
+def send_file(path):
+    return send_from_directory('templates', path)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
