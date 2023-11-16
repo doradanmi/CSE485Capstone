@@ -1,4 +1,4 @@
-<!--Front end does not handle duplicate usernames. Back end must implement that. Back end
+<!--Front end does not handle duplicate usernames. Back end does that. Back end
 must also handle passwords and allow user to save changes if information requirements are satisfied.
 No empty blanks allowed.-->
 
@@ -94,21 +94,16 @@ No empty blanks allowed.-->
     </div>
 
     <script>
+      // User can edit and save updated account info.
       function updateInfo() {
-          console.log('updateInfo function called'); // Add this line to check if the function is called
-          
+                    
           const firstName = document.getElementById('firstName').value;
           const lastName = document.getElementById('lastName').value;
           const email = document.getElementById('email').value;
           const role = document.getElementById('role').value;
           const username = document.getElementById('username').value;
           const password = document.getElementById('password').value;
-          console.log('First Name:', firstName);
-          console.log('Last Name:', lastName);
-          console.log('Email:', email);
-          console.log('Role:', role);
-          console.log('Username:', username);
-          console.log('Password:', password);
+          
 
           if(username.trim() === '' || password.trim() === '') {
             alert('Fill out required fields before submission.');
@@ -142,7 +137,10 @@ No empty blanks allowed.-->
             //const logInData = JSON.parse(data);
         
             // Handle the response from the Lambda function.
-            alert("Account Information Updated")
+            alert("Account Information Updated");
+            // Clear textboxes after user clicks "Save Changes" button
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
           })
           .catch(error => {
             // Handle errors.
@@ -153,19 +151,12 @@ No empty blanks allowed.-->
 
       document.getElementById('submit').addEventListener('click', updateInfo);
 
-      //let msgDisplayed = false;
-
+      // User's input from Create Account page displays in Profile page.
       function userInfoDisplayed() {
         
         const lambdaUrl1 = 'https://iy26k5d2dpn4ihfs5oeaguy3im0bjqmg.lambda-url.us-east-1.on.aws/';
-          // const requestBody = {
-          //     user: username,
-          //     password: password,
-          //     first_name: firstName,
-          //     last_name: lastName,
-          //     email: email,
-          //     role: role
-          // };
+         
+          // Site connects user's first name to account
           const logInData = localStorage.getItem('loggedInSession');
           const requestBody = {
               Key: logInData
@@ -186,12 +177,10 @@ No empty blanks allowed.-->
 			})
 			.then(data => {
 
+        // Site connects user's first name in upper right corner
         const usertextID = document.getElementById("usertextID");
         usertextID.textContent = `${data.first_name}`;
         
-				//const logInData = JSON.parse(data);
-        console.log('First Name Error: ', data.first_name);
-        //document.getElementById("firstName").textContent = userFirstName;
         document.getElementById("firstName").value = data.first_name;
         document.getElementById('lastName').value = data.last_name;
         document.getElementById('email').value = data.email;
@@ -207,8 +196,6 @@ No empty blanks allowed.-->
 
       }
       window.onload = userInfoDisplayed();
-
-      //updateInfo(new Event('dummy'));
 
       
     </script>   
