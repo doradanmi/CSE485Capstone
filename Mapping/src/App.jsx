@@ -59,7 +59,9 @@ function App() {
 				},
 				body: JSON.stringify({
 					Key: "71c9a6840e7f0b0ea274e15427c9a1ac7db7b2be6f08dce14d08bcf29e075446",
-					User: "8b47e3b9448f0b72d9f12aa41ee5ca5754fe05f21cc8c521b5f6bdf6a507b36f",
+					User:
+						localStorage.getItem("loggedInSession") ||
+						"8b47e3b9448f0b72d9f12aa41ee5ca5754fe05f21cc8c521b5f6bdf6a507b36f", // get localStoage key loggedInSession
 				}),
 			}
 		)

@@ -15,7 +15,9 @@ function deleteFlight(flightNumber) {
 			},
 			body: JSON.stringify({
 				Flight: flightNumber,
-				User: "8b47e3b9448f0b72d9f12aa41ee5ca5754fe05f21cc8c521b5f6bdf6a507b36f",
+				User:
+					localStorage.getItem("loggedInSession") ||
+					"8b47e3b9448f0b72d9f12aa41ee5ca5754fe05f21cc8c521b5f6bdf6a507b36f",
 			}),
 		}
 	)
