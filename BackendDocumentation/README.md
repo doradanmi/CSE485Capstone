@@ -18,16 +18,16 @@ Request Body format:
 
 Response format: 
 ```
-***Successful***  
+Successful
 “statusCode”: 200,
  “body”: {“message”: "User account created successfully"}
 
 
-***User Exists*** 
+User Exists
 “statusCode”: 401,
  “body”: {“message”: "User account already exists please login instead"}
 
-***Invalid json request body***
+Invalid json request body
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
 ```
