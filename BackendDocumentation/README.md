@@ -1,10 +1,11 @@
-README for all the Backend lambda functions. 
+# README for all the Backend lambda functions. 
 
-Account Management 
-Create Account 
+## Account Management 
+### Create Account
 URL: https://twvazdor6gp5x4nuofhderginy0ytwbf.lambda-url.us-east-1.on.aws/
+
 Request Body format: 
-========================================================================
+```
 {
 “user”: username,
 “password”: password,
@@ -13,36 +14,37 @@ Request Body format:
 “email”: user_email_address,
 “role”: users_role
 }
-========================================================================
+```
 
 Response format: 
-========================================================================
-Successful  
+```
+***Successful***  
 “statusCode”: 200,
  “body”: {“message”: "User account created successfully"}
 
 
-User Exists 
+***User Exists*** 
 “statusCode”: 401,
  “body”: {“message”: "User account already exists please login instead"}
 
-Invalid json request body 
+***Invalid json request body***
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
-========================================================================
+```
 
-Login Account
+### Login Account
 URL: https://7moom33eemsdtvhzinznxo2mcu0wueqr.lambda-url.us-east-1.on.aws/
+
 Request Body format:
-========================================================================
+```
 {
 “user”: username,
 “password”: password
 }
-========================================================================
+```
 
 Response format:
-========================================================================
+```
 Successful  
 “statusCode”: 200,
  “body”: {“message”: "User account Found",
@@ -65,17 +67,18 @@ Error with account verification
 Invalid json request body 
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
-========================================================================
-Get Account
+```
+### Get Account
 URL: https://iy26k5d2dpn4ihfs5oeaguy3im0bjqmg.lambda-url.us-east-1.on.aws/ 
+
 Request Body format: 
-========================================================================
+```
 {
 “Key”: gen_key
 }
-========================================================================
+```
 Response format: 
-========================================================================
+```
 Successful  
 “statusCode”: 200,
  “body”: {“email”: user_email,
@@ -92,10 +95,12 @@ Invalid json request body
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
 
-========================================================================
-Update Account
+```
+### Update Account
 URL: https://j23ikc56jl4q22ofgxulwfjiny0eyaxi.lambda-url.us-east-1.on.aws/ 
-Request Body format: ========================================================================
+
+Request Body format:
+```
 {
 “user”: username,
 “password”: password,
@@ -104,10 +109,10 @@ Request Body format: ===========================================================
 “email”: user_email_address,
 “role”: users_role
 }
-========================================================================
+```
 
 Response Body format: 
-========================================================================
+```
 Successful  
 “statusCode”: 200,
  “body”: {“email”: user_email,
@@ -131,20 +136,20 @@ User account not verified
 Invalid json request body 
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
-========================================================================
+```
 
-Delete Account
+### Delete Account
 URL: https://vfdxqadufcp3moeugbted437li0xjjhm.lambda-url.us-east-1.on.aws/ 
+
 Request Body format: 
-========================================================================
+```
 {
 “Key”: gen_key
 }
 
-========================================================================
-
+```
 Response Body format: 
-========================================================================
+```
 Successful  
 “statusCode”: 200,
  “body”: {“message”: "User deleted successfully"}
@@ -157,12 +162,13 @@ User not found
 Invalid json request body 
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
-========================================================================
-Flight Management
-Add Flight
+```
+## Flight Management
+### Add Flight
 URL: https://ncfqx2g33wwmf4ofvlgw3d52vm0haiaq.lambda-url.us-east-1.on.aws/
+
 Request Body format: 
-========================================================================
+```
 {
 “Flight”: flight_number,
 “Altitude”: altitude,
@@ -172,9 +178,9 @@ Request Body format:
 “Speed”: speed,
 “User”: user_hash_session_var
 }
-========================================================================
+```
 Response Body format: 
-========================================================================
+```
 Successfully added flight
 “statusCode”: 200,
  “body”: {“message”: "Flight added successfully"}
@@ -194,17 +200,18 @@ Flight exists error
 Invalid json request body 
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
-========================================================================
-Get flight 
+```
+### Get flight 
 URL: https://xzy55jtx57tccv6r56hi45rmma0qmnfs.lambda-url.us-east-1.on.aws/ 
+
 Request Body format: 
-========================================================================
+```
 {
 “User”: user_hash
 }
-========================================================================
+```
 Response format: 
-========================================================================
+```
 Successful  (returns a dictionary of flights using one flight as an example)
 “statusCode”: 200,
  “body”: {“flight_name”: { 
@@ -224,18 +231,19 @@ Invalid json request body
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
 
-========================================================================
-Delete flight:
-URL:https://i24eystngccnone2eijvnkcgey0laugl.lambda-url.us-east-1.on.aws/ 
+```
+### Delete flight:
+URL: https://i24eystngccnone2eijvnkcgey0laugl.lambda-url.us-east-1.on.aws/ 
+
 Request Body format:
-========================================================================
+```
 {
 “User”: user_hash,
 “Flight”: flight_number
 }
-========================================================================
+```
 Response Body format: 
-========================================================================
+```
 Successful  
 “statusCode”: 200,
  “body”: {“message”: "Flight deleted successfully"}
@@ -244,21 +252,22 @@ Invalid json request body
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
 
-========================================================================
-Drone Management
-Add Drones
+```
+## Drone Management
+### Add Drones
 URL: https://k5damhxdzuoskygjx4kjgmwl5u0bqjgy.lambda-url.us-east-1.on.aws/ 
+
 Request body format: 
-========================================================================
+```
 {
 “Drone”: drone_name,
 “Make”: make,
 “Model”: model,
 “User”: user_hash
      }
-========================================================================
+```
 Response body format: 
-========================================================================
+```
 Successful  
 “statusCode”: 200,
  “body”: {“message”: "Drone successfully added to account"}
@@ -271,19 +280,20 @@ Invalid json request body
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
 
-========================================================================
-Get Drones
+```
+### Get Drones
 URL: https://226ruughfrpu46mrtk2a6tzbbm0xigex.lambda-url.us-east-1.on.aws/ 
+
 Request Body: 
-========================================================================
+```
 {
 “User”: user_hash
 }
 
-========================================================================
+```
 
 Response body format: 
-========================================================================
+```
 Successful  (returns a dictionary of drones using one flight as an example)
 “statusCode”: 200,
  “body”: {{“drone”: drone_name,
@@ -298,4 +308,4 @@ Invalid json request body
 “statusCode”: 400,
  “body”: {“error”: “Invalid input”}
 
-========================================================================
+```
