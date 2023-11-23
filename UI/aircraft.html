@@ -41,10 +41,35 @@
           <th>Model</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Aircraft data rows will go here -->
+      <tbody id="aircraftTableBody">
+        <tr id="placeholderRow">
+          <td colspan="3">Loading...</td>
+        </tr>
       </tbody>
     </table>
   </div>
+
+  <script>
+    function addAircraftToTable(name, make, model) {
+      var tableBody = document.getElementById('aircraftTableBody');
+      var placeholderRow = document.getElementById('placeholderRow');
+      
+      if (placeholderRow) {
+        tableBody.removeChild(placeholderRow);
+      }
+
+      var newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${make}</td>
+        <td>${model}</td>
+      `;
+      tableBody.appendChild(newRow);
+    }
+
+    addAircraftToTable('Drone 1', 'DJI', 'Air 2S');
+    addAircraftToTable('Drone 2', 'Autel Robotics', 'Evo Lite+');
+    addAircraftToTable('Drone 3', 'Ryze', 'Tello');
+  </script>
 </body>
 </html>

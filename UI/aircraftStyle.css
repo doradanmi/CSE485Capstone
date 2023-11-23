@@ -289,9 +289,9 @@ nav {
   }
   
 
-/* Add these styles for the main content */
+
 .main-content {
-    margin-left: 250px; /* Adjust based on your navigation bar width */
+    margin-left: 250px; 
     padding: 20px;
 }
 
@@ -326,7 +326,7 @@ nav {
 
 #aircraftTable th {
     color: white;
-    background-color: #383838; /* Add this to ensure the header is visible */
+    background-color: #383838; 
 }
 
 #aircraftTable tr:nth-child(even) {
